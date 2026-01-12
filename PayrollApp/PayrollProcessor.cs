@@ -14,25 +14,25 @@ namespace PayrollApp
     /// </summary>
     public class PayrollProcessor
     {
-        private readonly List<Employee> employees;
-        private readonly List<PaySlip> paySlips = new();
+        //private readonly List<Employee> employees;
+        //private readonly List<PaySlip> paySlips = new();
 
         /// <summary>
         /// Multicast delegate for notifications.
         /// </summary>
         public SalaryProcessedHandler? SalaryProcessed;
 
-        public PayrollProcessor(List<Employee> employees)
-        {
-            this.employees = employees;
-        }
+        // public PayrollProcessor(List<Employee> employees)
+        // {
+        //     this.employees = employees;
+        // }
 
         /// <summary>
         /// Processes payroll using polymorphism (no if/else).
         /// </summary>
         public void ProcessPayroll()
         {
-            foreach (var emp in employees)
+            foreach (var emp in PayrollStore.Employees)
             {
                 decimal gross = emp.CalculateGross();
                 decimal deductions = emp.CalculateDeductions(gross);
@@ -47,7 +47,9 @@ namespace PayrollApp
                     NetSalary = gross - deductions
                 };
 
-                paySlips.Add(slip);
+                //paySlips.Add(slip);
+                PayrollStore.PaySlips.Add(slip);
+
 
                 // Invoke multicast delegate
                 SalaryProcessed?.Invoke(slip);
@@ -63,16 +65,25 @@ namespace PayrollApp
         {
             Console.WriteLine("\n===== PAYROLL SUMMARY =====");
 
-            Console.WriteLine($"Total Employees: {paySlips.Count}");
-            Console.WriteLine($"Total Payout: ₹{paySlips.Sum(p => p.NetSalary)}");
+            // Console.WriteLine($"Total Employees: {paySlips.Count}");
+            // Console.WriteLine($"Total Payout: ₹{paySlips.Sum(p => p.NetSalary)}");
 
-            var grouped = paySlips.GroupBy(p => p.EmployeeType);
+            // var grouped = paySlips.GroupBy(p => p.EmployeeType);
+
+
+            Console.WriteLine($"Total Employees: {PayrollStore.PaySlips.Count}");
+            Console.WriteLine($"Total Payout: ₹{PayrollStore.PaySlips.Sum(p => p.NetSalary)}");
+            
+            var grouped = PayrollStore.PaySlips.GroupBy(p => p.EmployeeType);
+
             foreach (var group in grouped)
             {
                 Console.WriteLine($"{group.Key} Count: {group.Count()}");
             }
 
-            var highest = paySlips.OrderByDescending(p => p.NetSalary).First();
+            //var highest = paySlips.OrderByDescending(p => p.NetSalary).First();
+            var highest = PayrollStore.PaySlips.OrderByDescending(p => p.NetSalary).First();
+
             Console.WriteLine($"Highest Salary: {highest.EmployeeName} (₹{highest.NetSalary})");
         }
     }

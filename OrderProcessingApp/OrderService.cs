@@ -13,21 +13,43 @@ namespace OrderProcessingApp
     /// </summary>
     public class OrderService
     {
-        private readonly Dictionary<int, Order> _orders = new();
+        //private readonly Dictionary<int, Order> _orders = new();
 
         public OrderStatusChangedHandler StatusChanged;
 
+        // public void AddOrder(Order order)
+        // {
+        //     _orders[order.OrderId] = order;
+        //     Console.WriteLine($"Order {order.OrderId} created successfully.");
+        // }
+
+
         public void AddOrder(Order order)
         {
-            _orders[order.OrderId] = order;
+            OrderStore.Orders[order.OrderId] = order;
             Console.WriteLine($"Order {order.OrderId} created successfully.");
         }
+
+        // public void UpdateStatus(int orderId, OrderStatus newStatus)
+        // {
+        //     try
+        //     {
+        //         var order = _orders[orderId];
+        //         order.ChangeStatus(newStatus);
+        //         StatusChanged?.Invoke(order, newStatus);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"Status Change Failed: {ex.Message}");
+        //     }
+        // }
+
 
         public void UpdateStatus(int orderId, OrderStatus newStatus)
         {
             try
             {
-                var order = _orders[orderId];
+                var order = OrderStore.Orders[orderId];
                 order.ChangeStatus(newStatus);
                 StatusChanged?.Invoke(order, newStatus);
             }
@@ -37,6 +59,7 @@ namespace OrderProcessingApp
             }
         }
 
+
         /// <summary>
         /// Prints order summary and full timeline.
         /// </summary>
@@ -44,7 +67,7 @@ namespace OrderProcessingApp
         {
             Console.WriteLine("\n===== ORDER REPORT =====");
 
-            foreach (var order in _orders.Values)
+            foreach (var order in OrderStore.Orders.Values)
             {
                 Console.WriteLine($"\nOrder ID: {order.OrderId}, Customer: {order.Customer.Name}");
                 Console.WriteLine($"Current Status: {order.CurrentStatus}");

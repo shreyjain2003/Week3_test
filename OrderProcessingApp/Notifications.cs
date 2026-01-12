@@ -7,10 +7,18 @@ namespace OrderProcessingApp
     /// </summary>
     public static class Notifications
     {
+        // public static void NotifyCustomer(Order order, OrderStatus status)
+        // {
+        //     Console.WriteLine($"[Customer] Order {order.OrderId} is now {status}");
+        // }
+
         public static void NotifyCustomer(Order order, OrderStatus status)
         {
-            Console.WriteLine($"[Customer] Order {order.OrderId} is now {status}");
+            var msg = $"[Customer] Order {order.OrderId} is now {status}";
+            Console.WriteLine(msg);
+            OrderStore.NotificationLogs.Add(msg);
         }
+
 
         public static void NotifyLogistics(Order order, OrderStatus status)
         {
