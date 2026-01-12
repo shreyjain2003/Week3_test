@@ -1,0 +1,32 @@
+# =========================
+# .NET / C# Ignore Rules
+# =========================
+
+# Build results
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# NuGet
+packages/
+
+# Test results
+TestResults/
+
+# Publish output
+publish/
